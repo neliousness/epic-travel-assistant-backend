@@ -1,4 +1,4 @@
-# Spring Boot REST API
+# Epic Travel Assistant REST API
 
 This Spring Boot application provides a REST API with endpoints to retrieve city information and manage user registration and authentication.
 
