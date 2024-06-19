@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserService(private val userRepository: UserRepository) {
+    fun register(userDto: UserDto) = userRepository.save(userDto.toUser())
 
-    fun register(userDto: UserDto) : String  = "created"
+    fun signIn(userDto: UserDto)  {
+        //Todo - implement sign in with JWT
+    }
 }

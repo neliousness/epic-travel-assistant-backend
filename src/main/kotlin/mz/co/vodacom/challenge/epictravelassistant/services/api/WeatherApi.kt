@@ -11,5 +11,5 @@ import retrofit2.http.Url
 @Service
 interface WeatherApi {
     @GET
-    fun fetchWeather(@Url url: String, @Query("lat") lat: Double?, @Query("lon") lon: Double?, @Query("appid") api: String): Call<WeatherResponseDto>
+    fun fetchWeather(@Url url: String, @Query("lat") lat: Double?, @Query("lon") lon: Double?, @Query("units") units: String, @Query("appid") api: String): Call<WeatherResponseDto>
 }

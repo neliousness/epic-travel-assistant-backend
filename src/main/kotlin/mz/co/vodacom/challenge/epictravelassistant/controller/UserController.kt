@@ -13,8 +13,20 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("v1/user")
 class UserController( val userService: UserService) {
 
+    /**
+     * Registers a user making with their email and password
+     */
     @PostMapping("/register")
-    fun register(@RequestBody userDto : UserDto): ResponseEntity<String> = ResponseEntity
+    fun register(@RequestBody userDto : UserDto): ResponseEntity<Any> = ResponseEntity
         .status(HttpStatus.CREATED)
         .body(userService.register(userDto))
+
+
+    /**
+     * Signs a user in using their credentials
+     */
+    @PostMapping("/signIn")
+    fun signIn(@RequestBody userDto : UserDto): ResponseEntity<Any> = ResponseEntity
+        .status(HttpStatus.OK)
+        .body(userService.signIn(userDto))
 }

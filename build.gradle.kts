@@ -23,10 +23,14 @@ dependencies {
     implementation("joda-time:joda-time:2.12.2")
     implementation("com.google.code.gson:gson:2.8.9") // Use the latest version
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-cache")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.0.4")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+    implementation("io.jsonwebtoken:jjwt:0.12.5")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

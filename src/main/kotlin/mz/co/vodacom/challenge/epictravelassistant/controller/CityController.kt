@@ -12,8 +12,13 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("v1/city")
 class CityController(val cityService: CityService) {
 
-    @GetMapping("/byName")
-    fun searchByName(@RequestParam("city") cityName: String): ResponseEntity<Any?> = ResponseEntity
+
+    /**
+     * searches for a city by name and returns weather, exchange , population and gdp information on
+     * @cityName - name of city
+     */
+    @GetMapping
+    fun searchByName(@RequestParam("name") cityName: String): ResponseEntity<Any?> = ResponseEntity
         .status(HttpStatus.OK)
         .body(cityService.searchByName(cityName))
 }
