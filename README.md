@@ -10,18 +10,18 @@ The application retrieves information such as weather data, exchange rate data, 
 
 1. **City API**
 
-    - Endpoint: `/v1/city/name`
+    - Endpoint: `http://localhost:8081/api/v1/city?name=<city>`
     - Description: Retrieves a list of cities based on the name provided in the request parameter.
 
 2. **User Registration**
 
-    - Endpoint: `/v1/user/register`
+    - Endpoint: `/api/v1/user/register`
     - Method: `POST`
     - Description: Registers a new user using the data provided in the request body.
 
 3. **User Sign In**
 
-    - Endpoint: `/v1/user/signIn`
+    - Endpoint: `/api/v1/user/login`
     - Method: `POST`
     - Description: Authenticates a user based on the credentials provided in the request body.
 
@@ -45,19 +45,19 @@ The application will start on `localhost:8081`.
 
 3. Access the API endpoints:
 
-- City API: `http://localhost:8081/v1/city?name=<city>`
-- User Registration: `http://localhost:8081/v1/user/register`
-- User Sign In: `http://localhost:8081/v1/user/signIn`
+- City API: `http://localhost:8081/api/v1/city?name=<city>`
+- User Registration: `http://localhost:8081/api/v1/user/register`
+- User Sign In: `http://localhost:8081/ap1/v1/user/login`
 
 ### Building and Running as a JAR
 
-1. Build the JAR file:
+1. Build the JAR by runing the `bootjar` command
 2. Run the JAR file:`java -jar build/libs/epictravelassistant-0.0.1-SNAPSHOT.jar`
 
 ### Docker
 
 1. Build the Docker image: `docker build -t <image-name> .`
-2. Run the Docker container:`docker run -p 8080:8080 <image-name>`
+2. Run the Docker container:`docker run -p 8081:8081 <image-name>`
    
  ## Usage:
 
@@ -69,5 +69,5 @@ The application will start on `localhost:8081`.
 
 - [x] Querying city data
 - [ ] Rate limiting (not achieved)
-- [ ] Caching  (was set up but not achieved)
-- [ ] Authentication (not achieved)
+- [ ] Caching  (was set up but minimally achieved)
+- [x] Authentication 
