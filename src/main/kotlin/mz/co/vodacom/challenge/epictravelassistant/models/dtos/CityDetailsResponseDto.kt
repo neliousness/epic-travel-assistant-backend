@@ -10,18 +10,20 @@ data class CityDetailsResponseDto(
     val population: Int?,
     val gdpPerCapita: Int?,
     val weather: Weather?,
+    val lat: Double,
+    val lon: Double,
     val exchangeRates: List<ExchangeRate>?
 ) {
     companion object {
-        fun toData(city: CityResponseDto?, country: List<CountryResponseDto>?, weather: WeatherResponseDto?, exchange: ExchangeRateResponseDto?): CityDetailsResponseDto? {
-
-            val country = country?.get(0)
+        fun toData(city: CityResponseDto?,  weather: WeatherResponseDto?, exchange: ExchangeRateResponseDto?): CityDetailsResponseDto? {
             return CityDetailsResponseDto(
-                id = city?.name,
-                name = city?.name,
-                country = country?.name,
-                population = country?.population,
-                gdpPerCapita = country?.gdp_per_capita?.toInt(),
+                id = city?.capital?.get(0) ?: "N/A",
+                name = city?.capital?.get(0) ?: "N/A",
+                country = city?.name?.common,
+                population = city?.population?.toInt(),
+                gdpPerCapita = 0,
+                lat = weather?.coord?.lat ?: 0.0,
+                lon = weather?.coord?.lon ?: 0.0,
                 weather = Weather(temperature = weather?.main?.temp?.toInt(), description = weather?.weather?.get(0)?.description),
                 exchangeRates = exchange?.conversion_rates?.map { entry -> ExchangeRate(baseCurrency = exchange.base_code, targetCurrency = entry.key, rate = entry.value, retrievalDate = exchange.time_last_update_utc)  }?.toList()
             )
