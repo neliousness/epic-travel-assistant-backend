@@ -2,12 +2,14 @@ package mz.co.vodacom.challenge.epictravelassistant.services
 
 import mz.co.vodacom.challenge.epictravelassistant.models.dtos.CityDetailsResponseDto
 import mz.co.vodacom.challenge.epictravelassistant.models.dtos.CityResponseDto
-import mz.co.vodacom.challenge.epictravelassistant.models.dtos.CountryResponseDto
 import mz.co.vodacom.challenge.epictravelassistant.models.dtos.ExchangeRateResponseDto
-import mz.co.vodacom.challenge.epictravelassistant.services.api.*
+import mz.co.vodacom.challenge.epictravelassistant.services.api.ApiServiceGenerator
+import mz.co.vodacom.challenge.epictravelassistant.services.api.CityApi
+import mz.co.vodacom.challenge.epictravelassistant.services.api.ExchangeRateApi
+import mz.co.vodacom.challenge.epictravelassistant.services.api.WeatherApi
 import mz.co.vodacom.challenge.epictravelassistant.services.api.weather.models.WeatherResponseDto
 import mz.co.vodacom.challenge.epictravelassistant.utils.constants.CommonConstants.Companion.CITY_BASE_URL
-import mz.co.vodacom.challenge.epictravelassistant.utils.constants.CommonConstants.Companion.COUNTRIES_BASE_URL
+import mz.co.vodacom.challenge.epictravelassistant.utils.constants.CommonConstants.Companion.EMPTY
 import mz.co.vodacom.challenge.epictravelassistant.utils.constants.CommonConstants.Companion.EXCHANGERATE_BASE_URL
 import mz.co.vodacom.challenge.epictravelassistant.utils.constants.CommonConstants.Companion.INITIAL_COUNTRIES
 import mz.co.vodacom.challenge.epictravelassistant.utils.constants.CommonConstants.Companion.WEATHER_BASE_URL
@@ -29,13 +31,10 @@ class CityService(
     @Value("\${api.exchangerate}")
     private lateinit var exchangeRateApi: String
 
-    @Value("\${api.country}")
-    private lateinit var countryApi: String
-
-    fun getCity(name: String? = ""): List<CityResponseDto>? {
+    fun getCity(name: String? = EMPTY): List<CityResponseDto>? {
         val service: CityApi = apiServiceGenerator.createService(CityApi::class.java)
         val url = "${CITY_BASE_URL}$name"
-        val callAsync: Call<List<CityResponseDto>> = service.fetchCity(url, countryApi)
+        val callAsync: Call<List<CityResponseDto>> = service.fetchCity(url)
         val response: Response<List<CityResponseDto>> = callAsync.execute()
         return if (response.isSuccessful) {
             LogUtils.log(this, response.body().toString())
@@ -44,20 +43,6 @@ class CityService(
             null
         }
     }
-
-    fun getCountry(name: String? = ""): List<CountryResponseDto>? {
-        val service: CountryApi = apiServiceGenerator.createService(CountryApi::class.java)
-        val url = "${COUNTRIES_BASE_URL}$name"
-        val callAsync: Call<List<CountryResponseDto>> = service.fetchCountry(url, countryApi)
-        val response: Response<List<CountryResponseDto>> = callAsync.execute()
-        return if (response.isSuccessful) {
-            LogUtils.log(this, response.body().toString())
-            response.body()
-        } else {
-            null
-        }
-    }
-
 
     fun getCityWeather(lat: Double? = 0.0, lon: Double? = 0.0): WeatherResponseDto? {
         val service: WeatherApi = apiServiceGenerator.createService(WeatherApi::class.java)
@@ -89,16 +74,17 @@ class CityService(
     fun performSearch(name: String): CityDetailsResponseDto? {
         LogUtils.log(this, "Searching city details for: $name")
         val city = getCity(name)?.getOrNull(0)
-        val country = getCountry(city?.country)
-        val weather = getCityWeather(lat = city?.latitude, lon = city?.longitude)
-        val exchange = getCityExchangeRates(country?.get(0)?.currency?.code)
-        return CityDetailsResponseDto.toData(city, country, weather, exchange)
+        val weather = getCityWeather(lat = city?.capitalInfo?.latlng?.get(0) ?: 0.0, lon = city?.capitalInfo?.latlng?.get(1) ?: 0.0)
+        val exchange = getCityExchangeRates(city?.currencies?.keys?.first())
+        return CityDetailsResponseDto.toData(city, weather, exchange)
     }
+
     @Cacheable(value = ["cities"])
     fun getDefaultCities(): List<CityDetailsResponseDto?> {
         LogUtils.log(this, "Fetching default cities")
         return INITIAL_COUNTRIES.map { city: String -> performSearch(city) }.toList()
     }
+
     fun searchByName(name: String): Any? {
         return if (name.isNotBlank()) {
             listOf(performSearch(name))

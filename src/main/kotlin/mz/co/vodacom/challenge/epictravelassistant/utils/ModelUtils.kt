@@ -6,9 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 
 
 class ModelUtils {
-
     companion object {
-
         fun toObjectJson(value: Any): String {
             val mapper = ObjectMapper()
             var jsonString = ""
@@ -21,6 +19,5 @@ class ModelUtils {
             return jsonString
         }
     }
-
 
 }

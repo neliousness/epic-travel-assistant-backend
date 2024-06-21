@@ -5,14 +5,12 @@ import org.springframework.stereotype.Component
 @Component
 class ConfigurationRepository {
 
+    /**
+     * Locally defines app specific configurations
+     */
     companion object {
-
-        //endregion colors
         @JvmStatic
         fun showDebugLogs() = true
-
-
-        //end region
     }
 
 }

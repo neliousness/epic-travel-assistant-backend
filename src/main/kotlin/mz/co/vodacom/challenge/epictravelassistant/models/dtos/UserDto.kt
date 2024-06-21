@@ -1,8 +1,7 @@
 package mz.co.vodacom.challenge.epictravelassistant.models.dtos
 
 import mz.co.vodacom.challenge.epictravelassistant.models.db.User
-import java.util.UUID
 
-data class UserDto(val email: String?, val password: String?) {
-   fun toUser() = User(email = email, password = password, id = UUID.randomUUID().toString())
+data class UserDto(val email: String?, val password: String? = null, var token: String? = null, var id: String? = null, val name: String, val surname: String) {
+    fun toUser() = User(email = email, password = password, name = name, surname = surname)
 }

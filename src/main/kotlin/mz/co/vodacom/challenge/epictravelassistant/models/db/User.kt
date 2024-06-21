@@ -6,6 +6,6 @@ import org.springframework.data.mongodb.core.mapping.Document
 
 
 @Document("users")
-class User(@Id val id: String?, val email: String?, val password: String?) {
+class User(@Id var id: String? = null, val email: String?, var password: String?, val name: String, val surname: String) {
     override fun toString() = ModelUtils.toObjectJson(this)
 }
